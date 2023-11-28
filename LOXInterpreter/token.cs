@@ -1,11 +1,11 @@
 ﻿using System;
 
-class Token
+public class Token
 {
-     TokenType type;
-   String lexeme;
-  Object? literal;
-  int line;
+     public TokenType type;
+   public String lexeme;
+  public Object? literal;
+  public int line;
 
     public Token(TokenType type, String lexeme, Object? literal, int line)
     {

@@ -14,27 +14,28 @@ class Scanner
     private int current = 0;
     private int line = 1;
     Dictionary<String, TokenType> keywords;
+    
     public Scanner(String source)
     {
 
 
         keywords = new Dictionary<String, TokenType>();
         keywords["and"] = TokenType.AND;
-        keywords["Class"] = TokenType.CLASS;
-        keywords["Else"] = TokenType.ELSE;
-        keywords["False"] = TokenType.FALSE;
-        keywords["For"] = TokenType.FOR;
-        keywords["Fun"] = TokenType.FUN;
-        keywords["If"] = TokenType.IF;
-        keywords["Nil"] = TokenType.NIL;
-        keywords["Or"] = TokenType.OR;
-        keywords["Print"] = TokenType.PRINT;
-        keywords["Return"] = TokenType.RETURN;
-        keywords["Ssuper"] = TokenType.SUPER;
-        keywords["This"] = TokenType.THIS;
-        keywords["True"] = TokenType.TRUE;
-        keywords["Var"] = TokenType.VAR;
-        keywords["While"] = TokenType.WHILE;
+        keywords["class"] = TokenType.CLASS;
+        keywords["else"] = TokenType.ELSE;
+        keywords["false"] = TokenType.FALSE;
+        keywords["for"] = TokenType.FOR;
+        keywords["fun"] = TokenType.FUN;
+        keywords["if"] = TokenType.IF;
+        keywords["nil"] = TokenType.NIL;
+        keywords["or"] = TokenType.OR;
+        keywords["print"] = TokenType.PRINT;
+        keywords["return"] = TokenType.RETURN;
+        keywords["super"] = TokenType.SUPER;
+        keywords["this"] = TokenType.THIS;
+        keywords["true"] = TokenType.TRUE;
+        keywords["var"] = TokenType.VAR;
+        keywords["while"] = TokenType.WHILE;
 
         this.source = source;
     }
@@ -45,8 +46,13 @@ class Scanner
             // We are at the beginning of the next lexeme.
             start = current;
             scanToken();
+        } 
+        /*
+        foreach (Token token in tokens)
+        {
+            Console.WriteLine(token.lexeme);
         }
-
+        */
         tokens.Add(new Token(TokenType.EOF, "", null, line));
         return tokens;
     }
@@ -70,7 +76,7 @@ class Scanner
         {
             return;
         }
-        String text = source.Substring(start, current);
+        String text = source.Substring(start, current - start );
         tokens.Add(new Token(type??default, text, literal, line));
     }
     void scanToken()
@@ -133,7 +139,7 @@ class Scanner
                 }
                 else
                 {
-                    Program.error(line, "Unexpected character.");
+                    Lox.error(line, "Unexpected character.");
 
                 }
                 break;
@@ -178,48 +184,45 @@ class Scanner
         {
             if (peek() == '\n') line++;
             advance();
-
+        }
 
             if (isAtEnd())
             {
-                Program.error(line, "Unterminated string.");
+                Lox.error(line, "Unterminated string.");
                 return;
             }
 
             // The closing ".
             advance();
             // Trim the surrounding quotes.
-            String value = source.Substring(start + 1, current - 1);
+            String value = source.Substring(start + 1, current - start - 2);
             addToken(TokenType.STRING, value);
-        }
+        
     }
 
     void number()
     {
         while (isDigit(peek())) advance();
-        String text = source.Substring(start, current);
-        TokenType? type = keywords[text];
-        if (type == null) type = TokenType.IDENTIFIER;
-        addToken(type);
-        // Look for a fractional part.
-        if (peek() == '.' && isDigit(peekNext()))
+        if(peek()== '.' && isDigit(peekNext()))
         {
-            // Consume the "."
             advance();
-
             while (isDigit(peek())) advance();
         }
-
         addToken(TokenType.NUMBER,
-            Double.Parse(source.Substring(start, current)));
+                       Double.Parse(source.Substring(start, current - start)));
+    
     }
 
     void identifier()
     {
         while (isAlphaNumeric(peek())) advance();
 
-        String text = source.Substring(start, current);
-        TokenType? type = keywords[text];
+        String text = source.Substring(start, current - start);
+        TokenType? type = null;
+        if (keywords.ContainsKey(text))
+        {
+            type = keywords[text];
+        }
         if (type == null) type = TokenType.IDENTIFIER;
         addToken(type);
     }

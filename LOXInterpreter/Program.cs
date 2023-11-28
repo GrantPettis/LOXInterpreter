@@ -2,15 +2,17 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-class Program
+class Lox
 {
+    private static  Interpreter interpreter = new Interpreter();
     static Boolean hadError = false;
+    static Boolean hadRuntimeError = false;
     static void Main(string[] args)
     {
         if (args.Length > 1)
         {
             Console.WriteLine("Usage: clox [script]");
-            Environment.Exit(64);
+            System.Environment.Exit(64);
         }
         else if (args.Length == 1)
         {
@@ -25,6 +27,7 @@ class Program
     static void runFile(String path) {
         string strings = File.ReadAllText(path);
         if (hadError) System.Environment.Exit(65);
+        if (hadRuntimeError) System.Environment.Exit(70);
         run(strings);
     }
     static void runPrompt() {
@@ -45,16 +48,21 @@ class Program
     {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
+        Parser parser = new Parser(tokens);
+        List<Stmt> statements = parser.parse();
 
-        // For now, just print the tokens.
-        foreach(Token token in tokens)
-        {
-            Console.WriteLine(token);
-        }
+
+        if (hadError) return;
+        Resolver resolver = new Resolver(interpreter);
+        resolver.resolve(statements);
+        if (hadError) return;
+
+        interpreter.interpret(statements);
     }
     public static void error(int line, String message)
     {
         report(line, "", message);
+
     }
 
     private static void report(int line, String where, String message)
@@ -62,6 +70,24 @@ class Program
         Console.Error.WriteLine(
             "[line " + line + "] Error" + where + ": " + message);
         hadError = true;
+    }
+   
+   public static void error(Token token, String message)
+    {
+        if (token.type == TokenType.EOF)
+        {
+            report(token.line, " at end", message);
+        }
+        else
+        {
+            report(token.line, " at '" + token.lexeme + "'", message);
+        }
+    }
+    public static void runtimeError(RuntimeError error)
+    {
+        Console.WriteLine(error.ToString() +
+            "\n[line " + error.token.line + "]");
+        hadRuntimeError = true;
     }
 }
 
