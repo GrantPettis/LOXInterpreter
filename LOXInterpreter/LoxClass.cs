@@ -30,14 +30,13 @@ public class LoxClass : LoxCallable
     {
         return name;
     }
-    public Object call(Interpreter interpreter,
-                     List<Object> arguments)
+    public Object call(Interpreter interpreter, List<Object> arguments)
     {
         LoxInstance instance = new LoxInstance(this);
         LoxFunction initializer = findMethod("init");
         if (initializer != null)
         {
-            Console.WriteLine("initializer is not null");
+            //Console.WriteLine("initializer is not null");
             initializer.bind(instance).call(interpreter, arguments);
         }
         return instance;

@@ -192,7 +192,7 @@ public Token name;
     public class Set : Expr
     {
         public Set(Expr obj, Token name, Expr value) {
-            Console.WriteLine("obj is " + obj);
+           // Console.WriteLine("obj is " + obj);
       this.obj = obj;
       this.name = name;
       this.value = value;

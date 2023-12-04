@@ -23,7 +23,7 @@ public class LoxInstance
     }
     public void set(Token name, Object value)
     {
-        Console.WriteLine("name is " + name.lexeme);
+       // Console.WriteLine("name is " + name.lexeme);
         fields[name.lexeme] = value;
     }
 

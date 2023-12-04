@@ -231,8 +231,9 @@ public Object visitGroupingExpr(Expr.Grouping expr)
     }
     private Object evaluate(Expr expr)
     {
-        Console.WriteLine(expr);
-    return expr.accept(this);
+        //Console.WriteLine("In evaluate");
+       // Console.WriteLine(expr);
+        return expr.accept(this);
     }
 private void execute(Stmt stmt)
 {
@@ -329,10 +330,10 @@ public Object visitBinaryExpr(Expr.Binary expr)
     public Object visitSetExpr(Expr.Set expr)
     {
         Object obj = evaluate(expr.obj);
-        Console.WriteLine(expr);
+       // Console.WriteLine(expr);
+       // Console.WriteLine(expr.obj);
         if (!(obj is LoxInstance)) {
-            throw new RuntimeError(expr.name,
-                                   "Only instances have fields.");
+              throw new RuntimeError(expr.name, "Only instances have fields.");
         }
 
         Object value = evaluate(expr.value);
