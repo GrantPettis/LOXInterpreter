@@ -20,7 +20,7 @@ public Object call(Interpreter interpreter, List<Object> arguments)
         {
             environment.define(declaration.par[i].lexeme, arguments[i]);
         }
-       // Console.WriteLine("environment is " + closure.getAt(0, "this"));
+       
             try
             {
                 interpreter.executeBlock(declaration.body, environment);

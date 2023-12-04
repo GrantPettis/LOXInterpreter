@@ -283,11 +283,11 @@ currentFunction = enclosingFunction;
     }
     private void resolveLocal(Expr expr, Token name)
     {
-        for (int i = scopes.Count - 1; i >= 0; i--)
+        for (int i = 0; i < scopes.Count; i++)
         {
             if (scopes.ElementAt(i).ContainsKey(name.lexeme))
             {
-                interpreter.resolve(expr, scopes.Count - 1 - i);
+                interpreter.resolve(expr, i);
                 return;
             }
         }

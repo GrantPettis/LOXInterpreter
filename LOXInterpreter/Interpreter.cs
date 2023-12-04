@@ -98,7 +98,10 @@ public Object? visitIfStmt(Stmt.If stmt)
 public Object? visitReturnStmt(Stmt.Return stmt)
 {
     Object value = null;
-    if (stmt.value != null) value = evaluate(stmt.value);
+        if (stmt.value != null)
+        {
+            value = evaluate(stmt.value);
+        };
 
     throw new Return(value);
 }
@@ -126,15 +129,17 @@ public Object? visitVarStmt(Stmt.Var stmt)
     public Object visitAssignExpr(Expr.Assign expr)
 {
     Object value = evaluate(expr.value);
-        int distance = locals[expr];
-        if (distance != null)
+        if (locals.ContainsKey(expr))
         {
+            int distance = locals[expr];
             environment.assignAt(distance, expr.name, value);
         }
         else
         {
             globals.assign(expr.name, value);
         }
+            
+        
         return value;
 }
 public Object visitUnaryExpr(Expr.Unary expr)
@@ -163,7 +168,7 @@ public Object visitUnaryExpr(Expr.Unary expr)
         {
            
             int distance = locals[expr];
-            return environment.getAt(distance, name.lexeme);
+            return environment.getAt(distance, name.lexeme); // distamce is wrong here
         }
         else
         {
@@ -239,8 +244,7 @@ private void execute(Stmt stmt)
 {
     stmt.accept(this);
 }
-    public void executeBlock(List<Stmt> statements,
-                    Environment environment)
+    public void executeBlock(List<Stmt> statements, Environment environment)
 {
     Environment previous = this.environment;
     try
