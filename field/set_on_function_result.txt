@@ -1,2 +1,1 @@
 Only instances have fields.
-[line 1] in script

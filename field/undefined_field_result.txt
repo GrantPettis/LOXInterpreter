@@ -1,2 +1,1 @@
 Undefined property 'bar'.
-[line 4] in script

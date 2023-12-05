@@ -4,5 +4,5 @@ fun fib(n) {
 }
 
 var start = clock();
-print fib(35); // expect  9.22746e+06;
+print fib(75025); // expect  9.22746e+06;
 print clock() - start;
