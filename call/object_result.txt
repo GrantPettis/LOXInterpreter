@@ -1,1 +1,2 @@
 Can only call functions and classes.
+[line 4]

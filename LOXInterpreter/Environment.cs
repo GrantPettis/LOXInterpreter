@@ -43,6 +43,12 @@ public class Environment
     }
     public void define(String name, Object value)
     {
+        if(values.ContainsKey(name))
+        {
+            values.Remove(name);
+            values.Add(name, value);
+            return;
+        }
         values.Add(name, value);
     }
     Environment ancestor(int distance)

@@ -184,10 +184,10 @@ public Object visitUnaryExpr(Expr.Unary expr)
             execute(statement);
             }
     }
-    catch (Exception error)
+    catch (RuntimeError error)
     {
         //Lox.runtimeError(error);
-        Console.WriteLine(error.Message + "\n[line " + error.StackTrace + "]");
+        Console.WriteLine(error.Message + "\n[line " + error.token.line + "]");
     }
 }
 private void checkNumberOperand(Token op, Object operand)
@@ -212,7 +212,10 @@ return true;
 {
     if (a == null && b == null) return true;
     if (a == null) return false;
-
+        if (a is Double && b is Double)
+        {
+            if (Double.IsNaN((Double) a) || Double.IsNaN((Double) b)) return false;
+        }
     return a.Equals(b);
 }
 private String stringify(Object obj)

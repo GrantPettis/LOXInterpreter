@@ -2,7 +2,7 @@
   "profiles": {
     "LOXInterpreter": {
       "commandName": "Project",
-      "commandLineArgs": "\"..\\..\\..\\..\\benchmark\\fib.lox\""
+      "commandLineArgs": "\"..\\..\\..\\..\\numbers\\nan_equality.lox\""
     }
   }
 }

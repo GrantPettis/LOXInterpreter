@@ -27,7 +27,7 @@ public class LoxInstance
         fields[name.lexeme] = value;
     }
 
-    public String ToString()
+    public override String ToString()
     {
         return klass.name + " instance";
     }
