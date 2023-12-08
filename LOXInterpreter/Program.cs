@@ -7,7 +7,7 @@ class Lox
     private static  Interpreter interpreter = new Interpreter();
     static Boolean hadError = false;
     static Boolean hadRuntimeError = false;
-    static void Main(string[] args)
+    static void Main(string[] args) 
     {
         if (args.Length > 1)
         {
